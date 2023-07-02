@@ -1,6 +1,8 @@
-import { Button, Cascader, Form, Input, Select } from "antd";
+import { Button, Cascader, Form, Input, Select, message } from "antd";
 import { getResidences } from "../api/residences";
+import { registerUser } from "../api/user";
 import { useEffect, useState } from "react";
+import sha256 from "crypto-js/sha256";
 const { Option } = Select;
 
 const formItemLayout = {
@@ -43,8 +45,20 @@ export default function RegisterForm() {
     fetchResidenceData();
   }, []);
   const [form] = Form.useForm();
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const onFinish = async (values) => {
+    try {
+      console.log("Received values of form: ", values);
+      await registerUser(
+        `+${values.prefix} ${values.phone}`,
+        sha256(values.password).toString(),
+        values.residence
+      );
+      message.success("Successfully Registered!");
+      form.resetFields();
+    } catch (err) {
+      console.error(err);
+      message.error("System Error!");
+    }
   };
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -54,7 +68,6 @@ export default function RegisterForm() {
         }}
       >
         <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
       </Select>
     </Form.Item>
   );
@@ -79,6 +92,7 @@ export default function RegisterForm() {
             required: true,
             message: "Please input your phone number!",
           },
+          { pattern: /^1[0-9]{10}$/, message: "incorrect phone number!" },
         ]}
       >
         <Input
@@ -96,6 +110,16 @@ export default function RegisterForm() {
           {
             required: true,
             message: "Please input your password!",
+          },
+          {
+            pattern: /^[a-zA-Z0-9_]{6,20}$/,
+            message:
+              "password must contain only a-z, A-Z, 0-9 and undersore(_)!",
+          },
+          {
+            min: 6,
+            max: 20,
+            message: "password must have a length between 6 and 20!",
           },
         ]}
         hasFeedback
