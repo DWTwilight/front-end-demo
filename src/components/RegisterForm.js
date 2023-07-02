@@ -1,40 +1,8 @@
 import { Button, Cascader, Form, Input, Select } from "antd";
+import { getResidences } from "../api/residences";
+import { useEffect, useState } from "react";
 const { Option } = Select;
 
-const residences = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: "jiangsu",
-    label: "Jiangsu",
-    children: [
-      {
-        value: "nanjing",
-        label: "Nanjing",
-        children: [
-          {
-            value: "zhonghuamen",
-            label: "Zhong Hua Men",
-          },
-        ],
-      },
-    ],
-  },
-];
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -67,6 +35,13 @@ const tailFormItemLayout = {
 };
 
 export default function RegisterForm() {
+  const [residences, setResidences] = useState([]);
+  useEffect(() => {
+    async function fetchResidenceData() {
+      setResidences(await getResidences());
+    }
+    fetchResidenceData();
+  }, []);
   const [form] = Form.useForm();
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
