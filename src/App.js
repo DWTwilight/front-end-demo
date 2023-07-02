@@ -1,9 +1,10 @@
-import { Button } from 'antd';
+import Title from "./components/Title";
+import "./styles/app.scss";
 
 function App() {
   return (
     <div className="App">
-      <Button type='primary'>Button</Button>
+      <Title />
     </div>
   );
 }
