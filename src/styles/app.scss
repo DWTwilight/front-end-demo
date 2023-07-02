@@ -29,3 +29,16 @@ body {
     font-style: italic;
   }
 }
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#register {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  min-width: 600px;
+}
