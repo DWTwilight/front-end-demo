@@ -1,16 +1,9 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Layout, Space } from "antd";
-const { Header, Footer, Sider, Content } = Layout;
+import { Layout } from "antd";
+import NavBar from "./components/NavBar";
+const { Header, Footer, Content } = Layout;
 
-const headerStyle = {
-  textAlign: "center",
-  color: "#fff",
-  height: 64,
-  paddingInline: 50,
-  lineHeight: "64px",
-  backgroundColor: "#7dbcea",
-};
 const contentStyle = {
   textAlign: "center",
   minHeight: 120,
@@ -27,7 +20,9 @@ const footerStyle = {
 export default function CommonLayout() {
   return (
     <Layout>
-      <Header style={headerStyle}>Header</Header>
+      <Header id="header">
+        <NavBar />
+      </Header>
       <Content style={contentStyle}>
         <Outlet />
       </Content>
