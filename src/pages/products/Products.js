@@ -1,5 +1,15 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { getProducts } from "../../api/product";
+import ProductList from "./components/ProductList";
 
 export default function Products() {
-  return <h1>Products</h1>;
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    async function fetchProducts() {
+      setProducts(await getProducts());
+    }
+    fetchProducts();
+  }, []);
+
+  return <ProductList products={products} />;
 }
