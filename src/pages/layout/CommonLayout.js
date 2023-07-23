@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { Layout } from "antd";
 import NavBar from "./components/NavBar";
+import CustomFooter from "./components/CustomFooter";
 const { Header, Footer, Content } = Layout;
 
 const contentStyle = {
@@ -10,11 +11,6 @@ const contentStyle = {
   lineHeight: "120px",
   color: "#fff",
   backgroundColor: "#108ee9",
-};
-const footerStyle = {
-  textAlign: "center",
-  color: "#fff",
-  backgroundColor: "#7dbcea",
 };
 
 export default function CommonLayout() {
@@ -26,7 +22,9 @@ export default function CommonLayout() {
       <Content style={contentStyle}>
         <Outlet />
       </Content>
-      <Footer style={footerStyle}>Footer</Footer>
+      <Footer id="footer">
+        <CustomFooter />
+      </Footer>
     </Layout>
   );
 }
