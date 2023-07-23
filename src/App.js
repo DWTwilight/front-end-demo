@@ -1,11 +1,19 @@
-import Title from "./components/Title";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./styles/app.scss";
+import CommonLayout from "./pages/layout/CommonLayout";
+import Products from "./pages/products/Products";
+import ShoppingCart from "./pages/shopping-cart/ShoppingCart";
 
 function App() {
   return (
-    <div className="App">
-      <Title />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<CommonLayout />}>
+          <Route index element={<Products />} />
+          <Route path="shopping-cart" element={<ShoppingCart />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
