@@ -27,7 +27,7 @@ const products = [
 ];
 
 describe("ProductList test", () => {
-  test("should ProductList", () => {
+  test("should render ProductList", () => {
     render(<ProductList products={products} />);
 
     expect(screen.getAllByRole("img")).toHaveLength(3);

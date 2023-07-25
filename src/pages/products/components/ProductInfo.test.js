@@ -11,7 +11,7 @@ const product = {
 };
 
 describe("ProductInfo test", () => {
-  test("should ProductInfo", () => {
+  test("should render ProductInfo", () => {
     render(<ProductInfo product={product} />);
 
     expect(screen.getByText("法拉利")).toBeInTheDocument();

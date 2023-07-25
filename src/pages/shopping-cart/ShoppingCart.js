@@ -1,5 +1,10 @@
 import React from "react";
+import EmptyCart from "./components/EmptyCart";
 
 export default function ShoppingCart() {
-  return <h1>Shopping Cart</h1>;
+  return (
+    <div className="shopping-cart">
+      <EmptyCart />
+    </div>
+  );
 }
