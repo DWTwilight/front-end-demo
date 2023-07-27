@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Card } from "antd";
+import { convertToDisplayPrice } from "../../../util/priceUtil";
 
 const { Meta } = Card;
 
@@ -15,7 +16,7 @@ export default function ProductInfo({ product }) {
           />
         }
         actions={[
-          <span>${(Math.round(product.price * 100) / 100).toFixed(2)}</span>,
+          <span>${convertToDisplayPrice(product.price)}</span>,
           <Button type="primary" danger>
             Add to Cart
           </Button>,
