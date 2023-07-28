@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import { getProducts } from "../api/shoppingCart";
+import { createCartProduct, updateCartProduct } from "../api/shoppingCart";
 
 export const ACTIONS = {
   LOAD_CART_PRODUCTS: "load_cart_products",
@@ -29,6 +30,29 @@ export const ShoppingCartContext = React.createContext({
   cartProducts: [],
   dispatch: () => {},
 });
+
+export const createCartItem = async (productId, dispatch) => {
+  const createdCartProduct = await createCartProduct({
+    productId,
+    quantity: 1,
+  });
+  dispatch({
+    type: ACTIONS.ADD_CART_PRODUCT,
+    payload: {
+      product: createdCartProduct,
+    },
+  });
+};
+
+export const updateCartItem = async (cartProduct, dispatch) => {
+  const updatedCartProduct = await updateCartProduct(cartProduct);
+  dispatch({
+    type: ACTIONS.UPDATE_CART_PRODUCT,
+    payload: {
+      product: updatedCartProduct,
+    },
+  });
+};
 
 export default function ShoppingCartProvider({ children }) {
   const [cartProducts, dispatch] = useReducer(reducer, []);

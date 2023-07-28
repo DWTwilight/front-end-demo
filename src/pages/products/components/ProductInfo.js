@@ -2,13 +2,10 @@ import React, { useContext } from "react";
 import { Button, Card, message } from "antd";
 import { convertToDisplayPrice } from "../../../util/priceUtil";
 import {
-  ACTIONS,
   ShoppingCartContext,
+  createCartItem,
+  updateCartItem,
 } from "../../../context/ShoppingCartProvider";
-import {
-  createCartProduct,
-  updateCartProduct,
-} from "../../../api/shoppingCart";
 
 const { Meta } = Card;
 
@@ -21,29 +18,14 @@ export default function ProductInfo({ product }) {
         (p) => p.productId === product.id
       );
       if (existingCarProduct) {
-        // increment
         existingCarProduct.quantity++;
-        const updatedCartProduct = await updateCartProduct(existingCarProduct);
-        dispatch({
-          type: ACTIONS.UPDATE_CART_PRODUCT,
-          payload: {
-            product: updatedCartProduct,
-          },
-        });
+        await updateCartItem(existingCarProduct, dispatch);
       } else {
-        const createdCartProduct = await createCartProduct({
-          productId: product.id,
-          quantity: 1,
-        });
-        dispatch({
-          type: ACTIONS.ADD_CART_PRODUCT,
-          payload: {
-            product: createdCartProduct,
-          },
-        });
+        await createCartItem(product.id, dispatch);
       }
       message.success("Add item to cart successfully!");
     } catch (err) {
+      console.error(err);
       message.error("System Error!");
     }
   }
