@@ -6,7 +6,7 @@ import { getProducts } from "../../api/product";
 import { getCombinedCartProductInfo } from "../../util/cartUtil";
 
 export default function ShoppingCart() {
-  const { products } = useContext(ShoppingCartContext);
+  const { cartProducts } = useContext(ShoppingCartContext);
   const [productsInfo, setProductsInfo] = useState([]);
   useEffect(() => {
     async function fetchProductsInfo() {
@@ -16,9 +16,9 @@ export default function ShoppingCart() {
   }, []);
   return (
     <div className="shopping-cart">
-      {products && products.length ? (
+      {cartProducts && cartProducts.length ? (
         <Cart
-          cartProducts={getCombinedCartProductInfo(products, productsInfo)}
+          cartProducts={getCombinedCartProductInfo(cartProducts, productsInfo)}
         />
       ) : (
         <EmptyCart />
