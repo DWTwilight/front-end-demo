@@ -63,9 +63,11 @@
   ],
   "cart-products": [
     {
-      "productId": 1,
+      "productId": 2,
       "quantity": 1,
-      "id": 1
+      "id": 1,
+      "name": "兰博基尼",
+      "price": 200
     }
   ],
   "profile": {
