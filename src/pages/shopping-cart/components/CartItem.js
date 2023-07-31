@@ -1,8 +1,24 @@
-import React from "react";
-import { Button } from "antd";
+import React, { useContext } from "react";
+import { Button, message } from "antd";
 import Price from "./Price";
+import {
+  ShoppingCartContext,
+  removeCartItem,
+} from "../../../context/ShoppingCartProvider";
 
 export default function CartItem({ cartProduct, index }) {
+  const { dispatch } = useContext(ShoppingCartContext);
+
+  async function removeItem() {
+    try {
+      await removeCartItem(cartProduct.id, dispatch);
+      message.success("Successfully removed cart item!");
+    } catch (err) {
+      console.error(err);
+      message.error("System Error!");
+    }
+  }
+
   return (
     <li key={index} className="cart-item">
       <span className="cart-item-id">{index + 1}</span>
@@ -19,7 +35,12 @@ export default function CartItem({ cartProduct, index }) {
           -
         </Button>
       </div>
-      <Button className="cart-item-remove-btn" type="primary" danger>
+      <Button
+        className="cart-item-remove-btn"
+        type="primary"
+        danger
+        onClick={removeItem}
+      >
         Remove Item
       </Button>
     </li>

@@ -1,11 +1,12 @@
 import React, { useReducer, useEffect } from "react";
-import { getProducts } from "../api/shoppingCart";
+import { getProducts, removeCartProduct } from "../api/shoppingCart";
 import { createCartProduct, updateCartProduct } from "../api/shoppingCart";
 
 export const ACTIONS = {
   LOAD_CART_PRODUCTS: "load_cart_products",
   ADD_CART_PRODUCT: "add_cart_product",
   UPDATE_CART_PRODUCT: "update_cart_product",
+  REMOVE_CART_PRODUCT: "remove_cart_product",
 };
 
 const reducer = (products, action) => {
@@ -21,6 +22,8 @@ const reducer = (products, action) => {
         }
         return product;
       });
+    case ACTIONS.REMOVE_CART_PRODUCT:
+      return products.filter((product) => product.id !== action.payload.id);
     default:
       return products;
   }
@@ -50,6 +53,16 @@ export const updateCartItem = async (cartProduct, dispatch) => {
     type: ACTIONS.UPDATE_CART_PRODUCT,
     payload: {
       product: updatedCartProduct,
+    },
+  });
+};
+
+export const removeCartItem = async (cartProductId, dispatch) => {
+  await removeCartProduct(cartProductId);
+  dispatch({
+    type: ACTIONS.REMOVE_CART_PRODUCT,
+    payload: {
+      id: cartProductId,
     },
   });
 };

@@ -22,3 +22,5 @@ export const updateCartProduct = (product) =>
       },
     })
     .then((response) => response.data);
+
+export const removeCartProduct = (id) => axios.delete(`${API_URL}/${id}`);
