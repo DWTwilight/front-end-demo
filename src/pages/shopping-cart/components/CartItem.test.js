@@ -8,7 +8,6 @@ import {
 import {
   ACTIONS,
   ShoppingCartContext,
-  updateCartItem,
 } from "../../../context/ShoppingCartProvider";
 import userEvent from "@testing-library/user-event";
 
@@ -23,6 +22,7 @@ describe("CartItem test", () => {
       quantity: 5,
       id: 1,
       price: 200,
+      discountPrice: 180,
       name: "奔驰",
     };
 
@@ -37,6 +37,7 @@ describe("CartItem test", () => {
     expect(screen.getByText("2")).toBeInTheDocument();
     expect(screen.getByText("奔驰(4)")).toBeInTheDocument();
     expect(screen.getByText("$200.00")).toBeInTheDocument();
+    expect(screen.getByText("$180.00")).toBeInTheDocument();
     expect(screen.getByText("5")).toBeInTheDocument();
     expect(screen.getByText("+")).toBeInTheDocument();
     expect(screen.getByText("-")).toBeInTheDocument();

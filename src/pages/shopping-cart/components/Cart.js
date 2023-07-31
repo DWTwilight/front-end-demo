@@ -2,19 +2,20 @@ import React from "react";
 import Price from "./Price";
 import CartList from "./CartList";
 import { Button } from "antd";
+import { calculateDiscount } from "../../../util/cartUtil";
 
 export default function Cart({ cartProducts }) {
+  const discountCartItems = calculateDiscount(cartProducts);
   return (
     <div id="cart-overview">
       <h3>Shopping Cart</h3>
-      <CartList cartProducts={cartProducts} />
+      <CartList cartProducts={discountCartItems.cartItems} />
       <div className="checkout-area">
         <h4>
-          Total:{" "}
+          Total:
           <Price
-            price={cartProducts
-              .map((product) => product.quantity * product.price)
-              .reduce((x, y) => x + y, 0)}
+            price={discountCartItems.totalPrice}
+            discountPrice={discountCartItems.totalDiscountPrice}
           />
         </h4>
         <Button type="primary">Check Out</Button>

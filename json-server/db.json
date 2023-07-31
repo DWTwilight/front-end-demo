@@ -63,11 +63,20 @@
   ],
   "cart-products": [
     {
-      "productId": 2,
-      "quantity": 1,
+      "productId": 1,
+      "quantity": 4,
       "id": 1,
-      "name": "兰博基尼",
-      "price": 200
+      "name": "法拉利",
+      "price": 100,
+      "discountPrice": 88
+    },
+    {
+      "productId": 4,
+      "quantity": 5,
+      "id": 2,
+      "name": "奔驰",
+      "price": 400,
+      "discountPrice": 366.6666666666667
     }
   ],
   "profile": {

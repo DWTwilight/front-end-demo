@@ -50,7 +50,10 @@ export default function CartItem({ cartProduct, index }) {
       <span className="cart-item-name">
         {cartProduct.name}({cartProduct.productId})
       </span>
-      <Price price={cartProduct.price} />
+      <Price
+        price={cartProduct.price}
+        discountPrice={cartProduct.discountPrice}
+      />
       <div className="cart-item-quantity-selector">
         <Button shape="circle" size="small" onClick={addQuantity}>
           +
