@@ -2,16 +2,10 @@ import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import CartItem from "./CartItem";
 import {
-  removeCartProduct,
-  updateCartProduct,
-} from "../../../api/shoppingCart";
-import {
   ACTIONS,
   ShoppingCartContext,
 } from "../../../context/ShoppingCartProvider";
 import userEvent from "@testing-library/user-event";
-
-jest.mock("../../../api/shoppingCart");
 
 describe("CartItem test", () => {
   const mockDispatch = jest.fn();
@@ -65,9 +59,6 @@ describe("CartItem test", () => {
     userEvent.click(screen.getByText("Remove Item"));
 
     await waitFor(() => {
-      expect(removeCartProduct).toBeCalledWith(product.id);
-    });
-    await waitFor(() => {
       expect(mockDispatch).toBeCalledWith({
         type: ACTIONS.REMOVE_CART_PRODUCT,
         payload: {
@@ -93,14 +84,14 @@ describe("CartItem test", () => {
         <CartItem cartProduct={product} index={1} />
       </ShoppingCartContext.Provider>
     );
-    const updatedItem = { ...product, quantity: 6 };
-    updateCartProduct.mockResolvedValue(updatedItem);
+    const updatedItem = {
+      id: 1,
+      productId: 4,
+      quantity: 6,
+    };
 
     userEvent.click(screen.getByText("+"));
 
-    await waitFor(() => {
-      expect(updateCartProduct).toBeCalledWith(updatedItem);
-    });
     await waitFor(() => {
       expect(mockDispatch).toBeCalledWith({
         type: ACTIONS.UPDATE_CART_PRODUCT,
@@ -127,14 +118,14 @@ describe("CartItem test", () => {
         <CartItem cartProduct={product} index={1} />
       </ShoppingCartContext.Provider>
     );
-    const updatedItem = { ...product, quantity: 4 };
-    updateCartProduct.mockResolvedValue(updatedItem);
+    const updatedItem = {
+      id: 1,
+      productId: 4,
+      quantity: 4,
+    };
 
     userEvent.click(screen.getByText("-"));
 
-    await waitFor(() => {
-      expect(updateCartProduct).toBeCalledWith(updatedItem);
-    });
     await waitFor(() => {
       expect(mockDispatch).toBeCalledWith({
         type: ACTIONS.UPDATE_CART_PRODUCT,

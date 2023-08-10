@@ -2,16 +2,10 @@ import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import ProductInfo from "./ProductInfo";
 import {
-  createCartProduct,
-  updateCartProduct,
-} from "../../../api/shoppingCart";
-import {
   ACTIONS,
   ShoppingCartContext,
 } from "../../../context/ShoppingCartProvider";
 import userEvent from "@testing-library/user-event";
-
-jest.mock("../../../api/shoppingCart");
 
 const product = {
   id: 1,
@@ -55,18 +49,10 @@ describe("ProductInfo test", () => {
     const createdCartProduct = {
       productId: 1,
       quantity: 1,
-      id: 1,
     };
-    createCartProduct.mockResolvedValue(createdCartProduct);
 
     userEvent.click(screen.getByRole("button"));
 
-    await waitFor(() => {
-      expect(createCartProduct).toBeCalledWith({
-        productId: product.id,
-        quantity: 1,
-      });
-    });
     await waitFor(() => {
       expect(mockDispatch).toBeCalledWith({
         type: ACTIONS.ADD_CART_PRODUCT,
@@ -100,13 +86,9 @@ describe("ProductInfo test", () => {
       quantity: 5,
       id: 2,
     };
-    updateCartProduct.mockResolvedValue(updatedCartProduct);
 
     userEvent.click(screen.getByRole("button"));
 
-    await waitFor(() => {
-      expect(updateCartProduct).toBeCalledWith(updatedCartProduct);
-    });
     await waitFor(() => {
       expect(mockDispatch).toBeCalledWith({
         type: ACTIONS.UPDATE_CART_PRODUCT,

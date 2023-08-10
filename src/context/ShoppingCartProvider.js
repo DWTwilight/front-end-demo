@@ -1,6 +1,4 @@
 import React, { useReducer, useEffect } from "react";
-import { getProducts, removeCartProduct } from "../api/shoppingCart";
-import { createCartProduct, updateCartProduct } from "../api/shoppingCart";
 
 export const ACTIONS = {
   LOAD_CART_PRODUCTS: "load_cart_products",
@@ -14,7 +12,9 @@ const reducer = (products, action) => {
     case ACTIONS.LOAD_CART_PRODUCTS:
       return action.payload.products;
     case ACTIONS.ADD_CART_PRODUCT:
-      return [...products, action.payload.product];
+      const id =
+        products && products.length ? products[products.length - 1].id + 1 : 1;
+      return [...products, { ...action.payload.product, id }];
     case ACTIONS.UPDATE_CART_PRODUCT:
       return products.map((product) => {
         if (product.id === action.payload.product.id) {
@@ -34,11 +34,11 @@ export const ShoppingCartContext = React.createContext({
   dispatch: () => {},
 });
 
-export const createCartItem = async (productId, dispatch) => {
-  const createdCartProduct = await createCartProduct({
+export const createCartItem = (productId, dispatch) => {
+  const createdCartProduct = {
     productId,
     quantity: 1,
-  });
+  };
   dispatch({
     type: ACTIONS.ADD_CART_PRODUCT,
     payload: {
@@ -47,18 +47,16 @@ export const createCartItem = async (productId, dispatch) => {
   });
 };
 
-export const updateCartItem = async (cartProduct, dispatch) => {
-  const updatedCartProduct = await updateCartProduct(cartProduct);
+export const updateCartItem = (cartProduct, dispatch) => {
   dispatch({
     type: ACTIONS.UPDATE_CART_PRODUCT,
     payload: {
-      product: updatedCartProduct,
+      product: cartProduct,
     },
   });
 };
 
-export const removeCartItem = async (cartProductId, dispatch) => {
-  await removeCartProduct(cartProductId);
+export const removeCartItem = (cartProductId, dispatch) => {
   dispatch({
     type: ACTIONS.REMOVE_CART_PRODUCT,
     payload: {
@@ -68,19 +66,14 @@ export const removeCartItem = async (cartProductId, dispatch) => {
 };
 
 export default function ShoppingCartProvider({ children }) {
-  const [cartProducts, dispatch] = useReducer(reducer, []);
+  const initialState = localStorage.getItem("cartProducts")
+    ? JSON.parse(localStorage.getItem("cartProducts"))
+    : [];
+  const [cartProducts, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    async function loadCartProducts() {
-      dispatch({
-        type: ACTIONS.LOAD_CART_PRODUCTS,
-        payload: {
-          products: await getProducts(),
-        },
-      });
-    }
-    loadCartProducts();
-  }, []);
+    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+  }, [cartProducts]);
 
   return (
     <ShoppingCartContext.Provider value={{ cartProducts, dispatch }}>

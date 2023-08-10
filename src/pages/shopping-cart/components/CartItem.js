@@ -10,9 +10,9 @@ import {
 export default function CartItem({ cartProduct, index }) {
   const { dispatch } = useContext(ShoppingCartContext);
 
-  async function removeItem() {
+  function removeItem() {
     try {
-      await removeCartItem(cartProduct.id, dispatch);
+      removeCartItem(cartProduct.id, dispatch);
       message.success("Successfully removed cart item!");
     } catch (err) {
       console.error(err);
@@ -20,24 +20,36 @@ export default function CartItem({ cartProduct, index }) {
     }
   }
 
-  async function addQuantity() {
+  function addQuantity() {
     try {
-      cartProduct.quantity++;
-      await updateCartItem(cartProduct, dispatch);
+      updateCartItem(
+        {
+          id: cartProduct.id,
+          productId: cartProduct.productId,
+          quantity: cartProduct.quantity + 1,
+        },
+        dispatch
+      );
     } catch (err) {
       console.error(err);
       message.error("System Error!");
     }
   }
 
-  async function reduceQuantity() {
+  function reduceQuantity() {
     try {
       if (cartProduct.quantity === 1) {
         message.error("Minimum quantity is 1!");
         return;
       }
-      cartProduct.quantity--;
-      await updateCartItem(cartProduct, dispatch);
+      updateCartItem(
+        {
+          id: cartProduct.id,
+          productId: cartProduct.productId,
+          quantity: cartProduct.quantity - 1,
+        },
+        dispatch
+      );
     } catch (err) {
       console.error(err);
       message.error("System Error!");

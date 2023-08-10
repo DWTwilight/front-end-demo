@@ -12,16 +12,16 @@ const { Meta } = Card;
 export default function ProductInfo({ product }) {
   const { cartProducts, dispatch } = useContext(ShoppingCartContext);
 
-  async function addToCart() {
+  function addToCart() {
     try {
       const existingCarProduct = cartProducts.find(
         (p) => p.productId === product.id
       );
       if (existingCarProduct) {
         existingCarProduct.quantity++;
-        await updateCartItem(existingCarProduct, dispatch);
+        updateCartItem(existingCarProduct, dispatch);
       } else {
-        await createCartItem(product.id, dispatch);
+        createCartItem(product.id, dispatch);
       }
       message.success("Add item to cart successfully!");
     } catch (err) {
