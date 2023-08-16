@@ -3,7 +3,10 @@ import EmptyCart from "./components/EmptyCart";
 import { ShoppingCartContext } from "../../context/ShoppingCartProvider";
 import Cart from "./components/Cart";
 import { getProducts } from "../../api/product";
-import { getCombinedCartProductInfo } from "../../util/cartUtil";
+import {
+  getCombinedCartProductInfo,
+  getRecommendedDiscountType,
+} from "../../util/cartUtil";
 
 export default function ShoppingCart() {
   const { cartProducts } = useContext(ShoppingCartContext);
@@ -19,6 +22,9 @@ export default function ShoppingCart() {
       {cartProducts && cartProducts.length ? (
         <Cart
           cartProducts={getCombinedCartProductInfo(cartProducts, productsInfo)}
+          recommendedDiscountType={getRecommendedDiscountType(
+            getCombinedCartProductInfo(cartProducts, productsInfo)
+          )}
         />
       ) : (
         <EmptyCart />

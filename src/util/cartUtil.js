@@ -11,19 +11,44 @@ export const getCombinedCartProductInfo = (cartProducts, productsInfo) => {
   );
 };
 
-function combineCartProductInfo(cartProduct, productInfo) {
+const combineCartProductInfo = (cartProduct, productInfo) => {
   return {
     ...cartProduct,
     name: productInfo.name,
     price: productInfo.price,
   };
-}
+};
 
-export const calculateDiscount = (cartItems) => {
+export const DISCOUNT_TYPE = {
+  NO_DISCOUNT: () => 0,
+  TEN_PERCENT_OFF: (totalPrice) => totalPrice * 0.1,
+  D_150_EVERY_1000: (totalPrice) => Math.floor(totalPrice / 1000) * 150,
+  D_500_EVERY_3000: (totalPrice) => Math.floor(totalPrice / 3000) * 500,
+};
+
+export const getRecommendedDiscountType = (cartItems) => {
   const totalPrice = cartItems
     .map((product) => product.quantity * product.price)
     .reduce((x, y) => x + y, 0);
-  const totalDiscount = Math.floor(totalPrice / 1000) * 150;
+  if (totalPrice < 0) return null;
+
+  let index = 0;
+  let discountPrice = -1;
+  const discountTypes = Object.values(DISCOUNT_TYPE);
+  discountTypes.forEach((discountType, i) => {
+    if (discountType(totalPrice) > discountPrice) {
+      discountPrice = discountType(totalPrice);
+      index = i;
+    }
+  });
+  return Object.keys(DISCOUNT_TYPE)[index];
+};
+
+export const calculateDiscount = (cartItems, discountType) => {
+  const totalPrice = cartItems
+    .map((product) => product.quantity * product.price)
+    .reduce((x, y) => x + y, 0);
+  const totalDiscount = discountType(totalPrice);
   return {
     totalPrice,
     totalDiscountPrice: totalPrice - totalDiscount,
@@ -33,10 +58,10 @@ export const calculateDiscount = (cartItems) => {
   };
 };
 
-function getDiscountCartItem(cartItem, totalDiscount, totalPrice) {
+const getDiscountCartItem = (cartItem, totalDiscount, totalPrice) => {
   return {
     ...cartItem,
     discountPrice:
       cartItem.price - (totalDiscount * cartItem.price) / totalPrice,
   };
-}
+};

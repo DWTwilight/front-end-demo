@@ -5,12 +5,14 @@ import CartItem from "./CartItem";
 export default function CartList({ cartProducts }) {
   return (
     <ul className="cart-list">
-      {cartProducts.map((cartProduct, index) => (
-        <>
-          <CartItem cartProduct={cartProduct} index={index} />
-          <Divider />
-        </>
-      ))}
+      {cartProducts
+        ? cartProducts.map((cartProduct, index) => (
+            <>
+              <CartItem cartProduct={cartProduct} index={index} />
+              <Divider />
+            </>
+          ))
+        : null}
     </ul>
   );
 }
